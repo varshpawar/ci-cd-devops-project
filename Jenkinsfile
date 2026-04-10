@@ -3,7 +3,7 @@ pipeline {
 
     stages {
 
-        stage('Clone Code') {
+        stage('Git Checkout') {
             steps {
                 git 'https://github.com/varshpawar/ci-cd-devops-project.git'
             }
