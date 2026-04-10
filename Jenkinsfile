@@ -2,6 +2,7 @@ pipeline {
     agent any
 
     stages {
+
         stage('Clone') {
             steps {
                 git branch: 'main',
@@ -9,16 +10,26 @@ pipeline {
             }
         }
 
-        stage('Build') {
+        stage('Build Docker Image') {
             steps {
-                echo 'Build started'
+                sh 'docker build -t ci-cd-app .'
             }
         }
 
-        stage('Test') {
+        stage('Run Docker Container') {
             steps {
-                echo 'Testing'
+                sh 'docker run -d -p 8080:80 ci-cd-app'
             }
+        }
+
+    }
+
+    post {
+        success {
+            echo 'Pipeline SUCCESS 🚀 App deployed successfully'
+        }
+        failure {
+            echo 'Pipeline FAILED ❌ Check logs'
         }
     }
 }
