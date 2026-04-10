@@ -1,19 +1,19 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: myapp
+  name: ci-cd-app
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: myapp
+      app: ci-cd-app
   template:
     metadata:
       labels:
-        app: myapp
+        app: ci-cd-app
     spec:
       containers:
-        - name: myapp
-          image: myapp
+        - name: ci-cd-app
+          image: ci-cd-app:latest
           ports:
             - containerPort: 80

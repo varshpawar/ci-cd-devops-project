@@ -1,5 +1,3 @@
 FROM nginx:latest
 
-COPY . /usr/share/nginx/html
-
-EXPOSE 80
+RUN echo "PRT - CI/CD Completed Successfully" > /usr/share/nginx/html/index.html

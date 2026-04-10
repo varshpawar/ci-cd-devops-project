@@ -1,37 +1,14 @@
-- hosts: master
+---
+- name: Setup CI/CD Machines
+  hosts: all
   become: yes
+
   tasks:
-    - name: Install Java
+    - name: Update system
       apt:
-        name: openjdk-11-jdk
-        state: present
         update_cache: yes
 
-    - name: Install Jenkins
+    - name: Install Java 21
       apt:
-        name: jenkins
+        name: openjdk-21-jdk
         state: present
-
-    - name: Start Jenkins
-      service:
-        name: jenkins
-        state: started
-        enabled: yes
-
-- hosts: agent
-  become: yes
-  tasks:
-    - name: Install Java
-      apt:
-        name: openjdk-11-jdk
-        state: present
-
-    - name: Install Docker
-      apt:
-        name: docker.io
-        state: present
-
-    - name: Start Docker
-      service:
-        name: docker
-        state: started

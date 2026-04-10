@@ -2,15 +2,22 @@ pipeline {
     agent any
 
     stages {
-        stage('Clone') {
+
+        stage('Clone Code') {
             steps {
-                git 'https://github.com/YOUR_USERNAME/YOUR_REPO.git'
+                git 'https://github.com/varshpawar/ci-cd-devops-project.git'
             }
         }
 
         stage('Build Docker Image') {
             steps {
-                sh 'docker build -t myapp .'
+                sh 'docker build -t ci-cd-app .'
+            }
+        }
+
+        stage('Run Container') {
+            steps {
+                sh 'docker run -d -p 8080:80 ci-cd-app'
             }
         }
     }
