@@ -1,0 +1,39 @@
+- hosts: localhost
+  become: yes
+  tasks:
+    - name: Install Java on Master
+      apt:
+        name: openjdk-11-jdk
+        state: present
+
+    - name: Install Jenkins
+      shell: |
+        wget -q -O - https://pkg.jenkins.io/debian/jenkins.io.key | apt-key add -
+        sh -c 'echo deb http://pkg.jenkins.io/debian-stable binary/ > /etc/apt/sources.list.d/jenkins.list'
+        apt update
+        apt install -y jenkins
+
+    - name: Start Jenkins
+      service:
+        name: jenkins
+        state: started
+        enabled: yes
+
+- hosts: agent
+  become: yes
+  tasks:
+    - name: Install Docker
+      apt:
+        name: docker.io
+        state: present
+
+    - name: Start Docker
+      service:
+        name: docker
+        state: started
+        enabled: yes
+
+    - name: Install Java on Agent
+      apt:
+        name: openjdk-11-jdk
+        state: present
