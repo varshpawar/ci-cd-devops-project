@@ -1,17 +1,27 @@
 - hosts: localhost
   become: yes
   tasks:
-    - name: Install Java on Master
+    - name: Install Java (Jenkins requirement)
       apt:
-        name: openjdk-11-jdk
+        name: openjdk-21-jdk
+        state: present
+        update_cache: yes
+
+    - name: Add Jenkins key
+      get_url:
+        url: https://pkg.jenkins.io/debian-stable/jenkins.io-2023.key
+        dest: /usr/share/keyrings/jenkins-keyring.asc
+
+    - name: Add Jenkins repo
+      apt_repository:
+        repo: deb [signed-by=/usr/share/keyrings/jenkins-keyring.asc] https://pkg.jenkins.io/debian-stable binary/
         state: present
 
     - name: Install Jenkins
-      shell: |
-        wget -q -O - https://pkg.jenkins.io/debian/jenkins.io.key | apt-key add -
-        sh -c 'echo deb http://pkg.jenkins.io/debian-stable binary/ > /etc/apt/sources.list.d/jenkins.list'
-        apt update
-        apt install -y jenkins
+      apt:
+        name: jenkins
+        state: present
+        update_cache: yes
 
     - name: Start Jenkins
       service:
@@ -26,6 +36,7 @@
       apt:
         name: docker.io
         state: present
+        update_cache: yes
 
     - name: Start Docker
       service:
@@ -33,7 +44,7 @@
         state: started
         enabled: yes
 
-    - name: Install Java on Agent
+    - name: Install Java
       apt:
-        name: openjdk-11-jdk
+        name: openjdk-21-jdk
         state: present
