@@ -1,3 +1,2 @@
-FROM nginx:latest
-
-RUN echo "PRT - CI/CD Completed Successfully" > /usr/share/nginx/html/index.html
+FROM nginx
+RUN echo "PRT – CI/CD Completed Successfully" > /usr/share/nginx/html/index.html
